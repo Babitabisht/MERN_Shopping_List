@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const ItemSchema = new Schema({
   name: {
-    type: Strimg,
+    type: String,
     required: true
   },
   date:{
