@@ -11,9 +11,10 @@ import {
 } from "reactstrap";
 
 import { connect } from "react-redux";
-import { addItem } from "../actions/itemActions";
+import { addItem } from "../actions/ItemAction";
+import uuid from 'uuid';
 
-class ItemMoal extends Component {
+class ItemModal extends Component {
   state = {
     modal: false,
     name: ""
@@ -33,7 +34,7 @@ class ItemMoal extends Component {
 
     e.preventDefault();
     const newItem={
-        id:uuid,
+      
         name:this.state.name
     }
 
@@ -53,6 +54,7 @@ class ItemMoal extends Component {
           color="dark"
           style={{ marginBotton: "2rem" }}
           onClick={this.toggle}
+          className="mb-5"
         >
           Add Item
         </Button>
@@ -63,7 +65,7 @@ class ItemMoal extends Component {
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="item">Item</Label>
-                <input type="text" name="name" id="item"
+                <Input type="text" name="name" id="item"
                 placeholder="Add Shopping list"
                 onChange={this.onChange}
                 />
@@ -83,8 +85,12 @@ class ItemMoal extends Component {
   }
 }
 
-const mapStateToProps = state =>{
-    item:state.item
-}
+const mapStateToProp = state =>({
+  item:state.item
+})
 
-export default connect(mapStateToProps , {addItem})(ItemMoal);
+// const mapStateToProp=(state)=>({
+//   item:state.item
+// })
+
+export default connect(mapStateToProp , {addItem})(ItemModal);
