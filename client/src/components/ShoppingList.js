@@ -3,38 +3,26 @@ import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import uuid from "uuid";
 import "../App.css";
+import {connect } from 'react-redux' ;
+import {getItems,deleteItems} from '../actions/ItemAction';
+import PropTypes from 'prop-types';
+
 
 class ShoppingList extends Component {
-  state = {
-    items: [
-      { id: uuid(), name: "Eggs" },
-      { id: uuid(), name: "milk" },
-      { id: uuid(), name: "Steak" },
-      { id: uuid(), name: "Water" }
-    ]
-  };
+  componentDidMount = () => {
+    this.props.getItems();
+  }
+
+  onDeleteClick=(id)=>{
+    this.props.deleteItems(id);
+  }
+  
 
   render() {
-    const { items } = this.state;
-
+      const {items}=this.props.item;
     return (
       <Container>
-        <Button
-          color="dark"
-          style={{ marginBottom: "2rem" }}
-          onClick={() => {
-            const name = prompt("Enter name");
-
-            if (name) {
-              this.setState(state => ({
-                items: [...state.items, { id: uuid(), name }]
-              }));
-            }
-          }}
-        >
-          Add Item
-        </Button>
-<ListGroup>
+       <ListGroup>
 <TransitionGroup className="shopping-list">
 
 {items.map( ({id,name})=>(
@@ -47,13 +35,7 @@ classNames="fade"
 className="remove-btn"
 color="danger"
 size="sm"
-onClick={ ()=>{
-
-    this.setState(state =>({
-        items:state.items.filter(item=>item.id !==id)
-
-    }));
-} }
+onClick={this.onDeleteClick.bind(this,id) }
 
 >
 &times;
@@ -81,4 +63,14 @@ onClick={ ()=>{
   }
 }
 
-export default ShoppingList;
+ShoppingList.propTypes={
+  getItems:PropTypes.func.isRequired,
+  deleteItems:PropTypes.func.isRequired,
+  item:PropTypes.object.isRequired,
+  
+}
+
+const mapStateToProp=(state)=>({
+  item:state.item
+})
+export default connect(mapStateToProp,{getItems,deleteItems} )( ShoppingList);
